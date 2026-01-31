@@ -1,1 +1,2 @@
-# TestStudentIDMerker2
+#おマン子だよ
+こんちには、おマン子ですわ。
