@@ -338,7 +338,10 @@ draw();
     x = 30;
     y = 310;
   }
-
+    ctx.fillStyle = "#000";
+    const studentId = "S-" + Math.floor(100000 + Math.random() * 900000);
+    trgetctx.font = "18px sans-serif";
+    trgetctx.fillText("学籍番号 "+studentId);
   // ===== 描画 =====
   trgetctx.fillStyle = "#c00000"; // 赤文字
   trgetctx.font = "28px sans-serif";
