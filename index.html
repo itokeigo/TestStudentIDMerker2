@@ -28,6 +28,8 @@
       font-size: 20px;
       border: 1px solid #333;
     }
+<input type="file" id="imageInput" accept="image/*">
+<button id="sendBtn">Discordに送信</button>
 
     /* 右の情報エリア */
     .info {
@@ -83,7 +85,7 @@ const webhookUrl = "https://discord.com/api/webhooks/1467433717969584231/m-MnTav
 
 document.getElementById("sendBtn").addEventListener("click", () => {
   const values = document.querySelectorAll(".value");
-
+ const imageFile = document.getElementById("imageInput").files[0];
   const data = {
     school: values[0].value,
     department: values[1].value,
@@ -91,6 +93,9 @@ document.getElementById("sendBtn").addEventListener("click", () => {
     birthday: values[3].value,
     expiry: values[4].value,
   };
+   if (imageFile) {
+    formData.append("image", imageFile);
+  }
 
   const message =
 `📘 学生証情報
