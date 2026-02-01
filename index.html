@@ -111,7 +111,7 @@ if (photoImg) {
      if (document.getElementById("template").value == "blue") 
      {
        ctx.font = "40px sans-serif";
-     ctx.fillText(values[0].value || "学校名", 20, 20);
+     ctx.fillText(values[0].value || "学校名", 20, 60);
       ctx.font = "18px sans-serif";
      }
     // ★ 学校名（赤枠内）
@@ -308,9 +308,10 @@ draw();
     y = 600;
   } else {
     line1=line1+line2;
+    line2="";
     // 青テンプレ用（★調整してOK）
-    x = 90;
-    y = 300;
+    x = 30;
+    y = 350;
   }
 
   // ===== 描画 =====
