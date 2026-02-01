@@ -307,7 +307,7 @@ window.addEventListener("mouseup", () => {
 // 初期描画
 draw();
 
-  function drawSchoolLabel(template, schoolName) {
+  function drawSchoolLabel(trgetctx,template, schoolName) {
   // ===== 表示文字を決定 =====
   let line1 = "";
   let line2 = "";
@@ -340,13 +340,13 @@ draw();
   }
 
   // ===== 描画 =====
-  ctx.fillStyle = "#c00000"; // 赤文字
-  ctx.font = "28px sans-serif";
+  trgetctx.fillStyle = "#c00000"; // 赤文字
+  trgetctx.font = "28px sans-serif";
 
-  ctx.fillText(line1, x, y);
+  trgetctx.fillText(line1, x, y);
 
   if (line2) {
-    ctx.fillText(line2, x, y + 28); // 改行分ずらす
+    trgetctx.fillText(line2, x, y + 28); // 改行分ずらす
   }
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -359,7 +359,7 @@ draw();
   // 元画像をコピー
   tctx.drawImage(canvas, 0, 0);
 // ★ 学校名（赤枠内）
-drawSchoolLabel(
+drawSchoolLabel(tctx,
   document.getElementById("template").value,
   values[0].value || ""
 );
