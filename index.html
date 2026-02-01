@@ -62,6 +62,9 @@ let photoH = 120;        // ← 仮。実際は読み込み時に縦横比で計
 let dragging = false;    // ドラッグ中か
 let dragOffsetX = 0;     // クリック位置と写真左上の差
 let dragOffsetY = 0;
+let minPhotoW = 40;    // 最小サイズ
+let maxPhotoW = 300;  // 最大サイズ
+
 // ============================
 
 function draw() {
@@ -71,7 +74,11 @@ function draw() {
 
   img.onload = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+   //頭から上に重ねて描画していく
+  // ③ 写真
+ if (photoImg) {
+  ctx.drawImage(photoImg, photoX, photoY, photoW, photoH);
+}
     // ① テンプレ
     ctx.drawImage(img, 0, 0, 600, 350);
 
@@ -86,11 +93,6 @@ function draw() {
     ctx.font = "18px sans-serif";
     ctx.fillText("生年月日 "+values[3].value || "2000-01-01", 260, 220);
     ctx.fillText("有効期限 "+values[4].value || "2030-03-31", 260, 250);
-
-    // ③ 写真
- if (photoImg) {
-  ctx.drawImage(photoImg, photoX, photoY, photoW, photoH);
-}
   };
 }
 
@@ -210,6 +212,42 @@ canvas.addEventListener("mousemove", (e) => {
 
   draw();
 });
+
+  // ====== 追加：ホイールで写真を拡大縮小（比率維持） ======
+canvas.addEventListener("wheel", (e) => {
+  if (!photoImg) return;
+
+  const { x, y } = getMousePos(e);
+
+  // 写真の上にマウスがあるときだけ反応
+  if (!isInsidePhoto(x, y)) return;
+
+  e.preventDefault(); // ページスクロール防止
+
+  const oldW = photoW;
+  const oldH = photoH;
+
+  // 拡大 or 縮小
+  const delta = e.deltaY < 0 ? 1.1 : 0.9;
+  photoW = Math.max(minPhotoW, Math.min(maxPhotoW, photoW * delta));
+
+  // 縦横比維持
+  const ratio = photoImg.height / photoImg.width;
+  photoH = photoW * ratio;
+
+  // マウス位置を中心に拡大縮小
+  const scale = photoW / oldW;
+  photoX = x - (x - photoX) * scale;
+  photoY = y - (y - photoY) * scale;
+
+  // はみ出し防止
+  photoX = Math.max(0, Math.min(photoX, canvas.width - photoW));
+  photoY = Math.max(0, Math.min(photoY, canvas.height - photoH));
+
+  draw();
+}, { passive: false });
+// ===============================================
+
 
 window.addEventListener("mouseup", () => {
   dragging = false;
