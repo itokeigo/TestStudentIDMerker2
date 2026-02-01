@@ -56,8 +56,8 @@ const templates = {
 let photoImg = null;     // アップロード画像を保持
 let photoX = 40;         // 写真のX位置（初期値）
 let photoY = 90;         // 写真のY位置（初期値）
-let photoW = 120;        // 写真の幅
-let photoH = 160;        // 写真の高さ
+let photoW = 140;        // 写真の幅（固定）
+let photoH = 120;        // ← 仮。実際は読み込み時に縦横比で計算する
 
 let dragging = false;    // ドラッグ中か
 let dragOffsetX = 0;     // クリック位置と写真左上の差
@@ -110,9 +110,18 @@ document.getElementById("photo").addEventListener("change", () => {
   const img = new Image();
   img.src = URL.createObjectURL(file);
   img.onload = () => {
-    photoImg = img;
-    draw();
-  };
+  photoImg = img;
+
+  // ★追加：縦横比を維持して高さを自動計算
+  const ratio = img.height / img.width; // 高さ / 幅
+  photoH = Math.round(photoW * ratio);
+
+  // はみ出し防止（高さが変わるので一応補正）
+  photoX = Math.max(0, Math.min(photoX, canvas.width - photoW));
+  photoY = Math.max(0, Math.min(photoY, canvas.height - photoH));
+
+  draw();
+};
 });
 // ===============================================
 
