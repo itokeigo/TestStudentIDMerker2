@@ -224,6 +224,7 @@ document.getElementById("photo").addEventListener("change", () => {
   const file = document.getElementById("photo").files[0];
   if (!file) {
     photoImg = null;
+    constrainPhotoToFrame(); // ★追加
     draw();
     return;
   }
@@ -247,7 +248,7 @@ photoH = TARGET_W * ratio;
 // ★ 枠のど真ん中に配置する（センター）
 photoX = frame.x + (frame.w - photoW) / 2;
 photoY = frame.y + (frame.h - photoH) / 2;
-
+constrainPhotoToFrame(); // ★追加
   draw();
 };
 });
