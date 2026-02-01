@@ -135,10 +135,6 @@ let pinchStartX = 0;
 let pinchStartY = 0;
 let pinchStartCenterX = 0;
 let pinchStartCenterY = 0;
-  let zoomStartCenterY = 0;
-let zoomStartW = 0;
-let zoomStartX = 0;
-let zoomStartY = 0;
 
 // ============================
 function getTouchDistance(t1, t2) {
@@ -384,12 +380,15 @@ canvas.addEventListener("touchstart", (e) => {
   }
 
 if (e.touches.length === 2) {
-  const center = getTouchCenter(e.touches[0], e.touches[1]);
+  pinchStartDist = getTouchDistance(e.touches[0], e.touches[1]);
+  pinchStartW = photoW;
+  pinchStartX = photoX;
+  pinchStartY = photoY;
 
-  zoomStartCenterY = center.clientY; // ★ 2本指の中心Y
-  zoomStartW = photoW;               // ★ 開始時の幅
-  zoomStartX = photoX;               // ★ 開始時の位置も保存
-  zoomStartY = photoY;
+  const center = getTouchCenter(e.touches[0], e.touches[1]);
+  const c = getMousePos(center);
+  pinchStartCenterX = c.x;
+  pinchStartCenterY = c.y;
 
   dragging = false;
 }
@@ -414,28 +413,18 @@ constrainPhotoToFrame(); // ★追加
   }
 
   // ---- 2本指：ピンチ拡大縮小 ----
-if (e.touches.length === 2) {
-  const center = getTouchCenter(e.touches[0], e.touches[1]);
+ if (e.touches.length === 2) {
+  const dist = getTouchDistance(e.touches[0], e.touches[1]);
+  const scale = dist / pinchStartDist;
 
-  // ★ 指の「移動量」で拡縮（上に動かすと拡大、下に動かすと縮小）
-  const dy = center.clientY - zoomStartCenterY;
-
-  // 感度：200 を小さくすると敏感、大きくすると鈍くなる
-  const scale = Math.exp(-dy / 200);
-
-  // 枠を覆う最小幅（前に作った getMinCoverWidth() を使う想定）
-  const minW = getMinCoverWidth();
-  const newW = Math.max(minW, zoomStartW * scale);
-
+  const newW = Math.max(minPhotoW, pinchStartW * scale);
   const ratio = photoImg.height / photoImg.width;
   const newH = newW * ratio;
 
-  // ★ 拡縮の基準点：2本指の中心を基準にする（飛び防止）
-  const { x, y } = getMousePos(center);
-
-  const s = newW / photoW;
-  photoX = x - (x - photoX) * s;
-  photoY = y - (y - photoY) * s;
+  // ★ ピンチ開始時の中心を基準に、開始時のX/Yから計算する（ここが重要）
+  const s = newW / pinchStartW;
+  photoX = pinchStartCenterX - (pinchStartCenterX - pinchStartX) * s;
+  photoY = pinchStartCenterY - (pinchStartCenterY - pinchStartY) * s;
 
   photoW = newW;
   photoH = newH;
