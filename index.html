@@ -180,10 +180,10 @@ if (photoImg) {
 
     {
   const schoolName = values[0].value || "学校名";
-  const maxWidth = 300;   // ← この横幅に収めたい
+  const maxWidth = 320;   // ← この横幅に収めたい
   let fontSize = 18;      // ← 最大フォントサイズ
 
-  while (fontSize > 10) {
+  while (fontSize > 9) {
     ctx.font = fontSize + "px sans-serif";
     if (ctx.measureText(schoolName).width <= maxWidth) break;
     fontSize--;
