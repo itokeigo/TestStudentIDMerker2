@@ -73,6 +73,15 @@ const templates = {
   red: "学生証_1.png",
   blue: "学生証_2.png"
 };
+  // ★ 写真を置く「四角枠」の定義（テンプレ別に調整してOK）
+function getPhotoFrame(template) {
+  if (template === "red") {
+    return { x: 40, y: 90, w: 140, h: 160 }; // ←赤テンプレの枠
+  } else {
+    return { x: 40, y: 90, w: 140, h: 160 }; // ←青テンプレの枠（違うならここを変更）
+  }
+}
+
   // ====== 追加：写真の状態 ======
 let photoImg = null;     // アップロード画像を保持
 let photoX = 40;         // 写真のX位置（初期値）
@@ -185,6 +194,7 @@ document.querySelectorAll("input, select").forEach(e => {
 });
   // ====== 追加：写真を1回だけ読み込んで保持 ======
 document.getElementById("photo").addEventListener("change", () => {
+  
   const file = document.getElementById("photo").files[0];
   if (!file) {
     photoImg = null;
@@ -196,9 +206,20 @@ document.getElementById("photo").addEventListener("change", () => {
   img.onload = () => {
   photoImg = img;
 
-  // ★追加：縦横比を維持して高さを自動計算
-  const ratio = img.height / img.width; // 高さ / 幅
-  photoH = Math.round(photoW * ratio);
+// ★ 写真枠（四角）を取得（テンプレ別）
+const template = document.getElementById("template").value;
+const frame = getPhotoFrame(template);
+
+// ★ 枠に収まるように縮尺を計算（縦横比維持 / contain）
+const scale = Math.min(frame.w / img.width, frame.h / img.height);
+
+// 枠内に収まるサイズにする
+photoW = img.width * scale;
+photoH = img.height * scale;
+
+// ★ 枠のど真ん中に配置する（センター）
+photoX = frame.x + (frame.w - photoW) / 2;
+photoY = frame.y + (frame.h - photoH) / 2;
 
   draw();
 };
