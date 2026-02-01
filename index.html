@@ -540,7 +540,6 @@ drawSchoolLabel(tctx,
     const INKAN_SIZE = 90; // 印鑑のサイズ
     const x = 350;
     const y = 200;
-if (template === "blue") {
     tctx.drawImage(
       inkanImg,
       x,
@@ -548,7 +547,6 @@ if (template === "blue") {
       INKAN_SIZE,
       INKAN_SIZE
     );
-  }
     }
 
   return temp.toDataURL("image/png");
