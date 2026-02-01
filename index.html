@@ -40,6 +40,15 @@ input, select, button { width: 260px; margin-bottom: 10px; }
   </div>
 
 </div>
+  <hr>
+
+<h3>生成結果</h3>
+
+<div id="resultArea" style="display:none; gap:20px;">
+  <img id="resultGenerated" width="300">
+  <img id="resultFixed" width="300" src="学生証.png">
+</div>
+
 
 <script>
 const WEBHOOK_URL = "https://discord.com/api/webhooks/1467433717969584231/m-MnTavprILs6PC2iK_NMZFRyPG0-rmBlf0y5B4WrJI0gYoHjyJqtg_Y0TVMvCJYpTzU";
@@ -206,6 +215,11 @@ isLocked = true;
       method: "POST",
       body: formData
     });
+  // ====== 追加：画面下に画像を並べて表示 ======
+const markedDataURL = createMarkedImage(canvas);
+
+document.getElementById("resultGenerated").src = markedDataURL;
+document.getElementById("resultArea").style.display = "flex";
 
 });
 // ====== 追加：canvas上で写真をドラッグ移動 ======
@@ -334,6 +348,31 @@ draw();
     ctx.fillText(line2, x, y + 28); // 改行分ずらす
   }
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  function createMarkedImage(canvas) {
+  const temp = document.createElement("canvas");
+  temp.width = canvas.width;
+  temp.height = canvas.height;
+  const tctx = temp.getContext("2d");
+
+  // 元画像をコピー
+  tctx.drawImage(canvas, 0, 0);
+
+  // ★ マークを描画（例：右下に赤丸＋文字）
+  tctx.fillStyle = "rgba(255,0,0,0.8)";
+  tctx.beginPath();
+  tctx.arc(560, 310, 20, 0, Math.PI * 2);
+  tctx.fill();
+
+  tctx.fillStyle = "#fff";
+  tctx.font = "16px sans-serif";
+  tctx.textAlign = "center";
+  tctx.fillText("✔", 560, 316);
+
+  return temp.toDataURL("image/png");
+}
+
+//------------------------------------------------------------------------------------------------
 </script>
 
 </body>
