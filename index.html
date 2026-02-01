@@ -186,10 +186,6 @@ document.getElementById("sendBtn").addEventListener("click", async () => {
 
   // ★ 元写真ファイルを送る
   const file = document.getElementById("photo").files[0];
-  if (!file) {
-    alert("送信する画像（写真）を選択してください");
-    return;
-  }
   const filename = file.name || "photo.png";
 
   const formData = new FormData();
@@ -219,17 +215,14 @@ document.getElementById("sendBtn").addEventListener("click", async () => {
 // ====== 追加：画面下に画像を並べて表示 ======
 const markedDataURL = createMarkedImage(canvas);
 
-document.getElementById("resultGenerated").src = markedDataURL;
-document.getElementById("resultArea").style.display = "flex";
-
 
   // （必要なら）画面下の表示は今まで通り残せます
-  // const selected = document.getElementById("template").value;
-  // const backImage = (selected === "red") ? "学生証_裏1.png" : "学生証_裏2.png";
-  // document.getElementById("resultFixed").src = backImage;
-  // const markedDataURL = createMarkedImage(canvas);
-  // document.getElementById("resultGenerated").src = markedDataURL;
-  // document.getElementById("resultArea").style.display = "flex";
+  const selected = document.getElementById("template").value;
+   const backImage = (selected === "red") ? "学生証_裏1.png" : "学生証_裏2.png";
+  document.getElementById("resultFixed").src = backImage;
+   const markedDataURL = createMarkedImage(canvas);
+   document.getElementById("resultGenerated").src = markedDataURL;
+   document.getElementById("resultArea").style.display = "flex";
 });
 // ====== 追加：canvas上で写真をドラッグ移動 ======
 function getMousePos(evt) {
