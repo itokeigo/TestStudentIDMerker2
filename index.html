@@ -36,8 +36,8 @@ input, select, button { width: 260px; margin-bottom: 10px; }
 
     <input type="file" id="photo" accept="image/*">
 
-    <button id="sendBtn">生成</button>
-    <div class="small"></div>
+    <button id="sendBtn">Discordに送信</button>
+    <div class="small">※Webhook URLを公開しないでください（第三者に悪用されます）</div>
   </div>
 
 </div>
@@ -71,10 +71,10 @@ function draw() {
     ctx.font = "18px sans-serif";
 
     ctx.fillText(values[0].value || "学校名", 250, 120);
-    ctx.fillText(values[1].value || "", 250, 150);
-    ctx.fillText(values[2].value || "名無し", 250, 180);
-    ctx.fillText("生年月日 "+values[3].value || "2002-01-01", 250, 210);
-    ctx.fillText("有効期限 "+values[4].value || "2027-03-31", 250, 240);
+    ctx.fillText(values[1].value || "学科", 250, 150);
+    ctx.fillText(values[2].value || "名前", 250, 180);
+    ctx.fillText(values[3].value || "2000-01-01", 250, 210);
+    ctx.fillText(values[4].value || "2030-03-31", 250, 240);
 
     // ③ 写真
     const file = document.getElementById("photo").files[0];
@@ -101,7 +101,8 @@ function canvasToBlob(cnv, type="image/png", quality=0.92) {
     cnv.toBlob((blob) => resolve(blob), type, quality);
   });
 }
-  }
+
+document.getElementById("sendBtn").addEventListener("click", async () => {
 
   const school = values[0].value || "-";
   const department = values[1].value || "-";
@@ -109,6 +110,7 @@ function canvasToBlob(cnv, type="image/png", quality=0.92) {
   const birthday = values[3].value || "-";
   const expiry = values[4].value || "-";
 
+  try {
     // ① 画像（合成済みCanvas）をPNGに
     const pngBlob = await canvasToBlob(canvas, "image/png");
 
@@ -137,6 +139,17 @@ function canvasToBlob(cnv, type="image/png", quality=0.92) {
       method: "POST",
       body: formData
     });
+
+    if (res.ok) {
+      alert("Discordに送信しました！");
+    } else {
+      const text = await res.text().catch(() => "");
+      alert("送信に失敗しました。\n" + res.status + " " + res.statusText + "\n" + text);
+    }
+
+  } catch (e) {
+    alert("通信エラー：\n" + (e?.message || e));
+  }
 });
 
 // 初期描画
