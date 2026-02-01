@@ -536,18 +536,15 @@ drawSchoolLabel(tctx,
 );
     
  // ③ 印鑑を重ねる（★ここ）
-  if (inkanImg.complete) {
-    const INKAN_SIZE = 90; // 印鑑のサイズ
-    const x = 450;
-    const y = 185;
-    tctx.drawImage(
-      inkanImg,
-      x,
-      y,
-      INKAN_SIZE,
-      INKAN_SIZE
-    );
-    }
+// ③ 印鑑を重ねる（blue の時だけ）
+const templateb = document.getElementById("template").value;
+if (templateb === "blue" && inkanImg.complete) {
+  const INKAN_SIZE = 90;
+  const x = 450;
+  const y = 185;
+  tctx.drawImage(inkanImg, x, y, INKAN_SIZE, INKAN_SIZE);
+}
+
 
   return temp.toDataURL("image/png");
 }
