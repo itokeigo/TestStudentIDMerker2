@@ -116,9 +116,9 @@ const templates = {
   // ★ 写真を置く「四角枠」の定義（テンプレ別に調整してOK）
 function getPhotoFrame(template) {
   if (template === "red") {
-    return { x: 30, y: 111, w: 143, h: 157 }; // ←赤テンプレの枠
+    return { x: 20, y: 85, w: 150, h: 170 }; // ←赤テンプレの枠
   } else {
-    return { x: 28, y: 100, w: 143, h: 157 }; // ←青テンプレの枠（違うならここを変更）
+    return { x: 20, y: 85, w: 150, h: 170 }; // ←青テンプレの枠（違うならここを変更）
   }
 }
   function constrainPhotoToFrame() {
@@ -195,6 +195,8 @@ function draw() {
   img.onload = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
    //頭から上に重ねて描画していく
+    // ① テンプレ
+    ctx.drawImage(img, 0, 0, 600, 350);
 // ③ 写真（最背面・枠からはみ出た部分は非表示）
 if (photoImg) {
   ctx.save();
@@ -211,9 +213,6 @@ if (photoImg) {
 
   ctx.restore();
 }
-    // ① テンプレ
-    ctx.drawImage(img, 0, 0, 600, 350);
-
     // ② 文字（位置は必要なら調整してOK）
     ctx.fillStyle = "#000";
     ctx.font = "18px sans-serif";
