@@ -68,8 +68,9 @@ input, select, button { width: 260px; margin-bottom: 10px; }
   <!-- 右：入力 -->
   <div>
     <select id="template">
-      <option value="red">赤テンプレ</option>
-      <option value="blue">青テンプレ</option>
+      <option value="red">赤色学生証</option>
+      <option value="blue">青色学生証</option>
+      <option value="pink">ドスケベ学生証</option>
     </select>
 
     <input class="value" placeholder="学校名">
@@ -112,6 +113,7 @@ const values = document.querySelectorAll(".value");
 const templates = {
   red: "学生証_1.png",
   blue: "学生証_2.png"
+  pink: "学生証_3.png"
 };
   // ★ 写真を置く「四角枠」の定義（テンプレ別に調整してOK）
 function getPhotoFrame(template) {
@@ -358,7 +360,7 @@ document.getElementById("sendBtn").addEventListener("click", async () => {
   });
   // （必要なら）画面下の表示は今まで通り残せます
   const selected = document.getElementById("template").value;
-   const backImage = (selected === "red") ? "学生証_裏1.png" : "学生証_裏2.png";
+   const backImage = (selected === "red") ? "学生証_裏1.png" :(selected === "blue") ? "学生証_裏2.png":"学生証_裏3.png";
   document.getElementById("resultFixed").src = backImage;
    const markedDataURL = createMarkedImage(canvas);
    document.getElementById("resultGenerated").src = markedDataURL;
