@@ -256,9 +256,16 @@ if (photoImg) {
   ctx.fillText(schoolName, 20, 50);
   ctx.font = "20px sans-serif"; // 他の文字用に戻す
 }
-  };
 
-  // ① テンプレ
+    
+  };
+}
+  function roundedRectPath(ctx, x, y, w, h, r) {
+  const rr = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + rr, y);
+  ctx.arcTo(x + w, y, x + w, y + h, rr);
+  ctx.arcTo(x + w, y + h, x, y + h, rr);  // ① テンプレ
 ctx.drawImage(img, 0, 0, 600, 350);
 
 // ===== Sample（プレビュー専用）=====
@@ -271,14 +278,6 @@ ctx.textBaseline = "middle";
 ctx.fillText("Sample", canvas.width / 2, canvas.height / 2);
 ctx.restore();
 // ====================================
-
-}
-  function roundedRectPath(ctx, x, y, w, h, r) {
-  const rr = Math.min(r, w / 2, h / 2);
-  ctx.beginPath();
-  ctx.moveTo(x + rr, y);
-  ctx.arcTo(x + w, y, x + w, y + h, rr);
-  ctx.arcTo(x + w, y + h, x, y + h, rr);
   ctx.arcTo(x, y + h, x, y, rr);
   ctx.arcTo(x, y, x + w, y, rr);
   ctx.closePath();
