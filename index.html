@@ -198,7 +198,21 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
    //頭から上に重ねて描画していく
     // ① テンプレ
-    ctx.drawImage(img, 0, 0, 600, 350);
+    // ① テンプレ
+ctx.drawImage(img, 0, 0, 600, 350);
+
+// ===== Sample（プレビュー専用）=====
+ctx.save();
+ctx.globalAlpha = 0.15;
+ctx.fillStyle = "#666";
+ctx.font = "bold 48px sans-serif";
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
+ctx.fillText("Sample", canvas.width / 2, canvas.height / 2);
+ctx.restore();
+// ====================================
+
+    
 // ③ 写真（最背面・枠からはみ出た部分は非表示）
 if (photoImg) {
   ctx.save();
@@ -265,19 +279,7 @@ if (photoImg) {
   ctx.beginPath();
   ctx.moveTo(x + rr, y);
   ctx.arcTo(x + w, y, x + w, y + h, rr);
-  ctx.arcTo(x + w, y + h, x, y + h, rr);  // ① テンプレ
-ctx.drawImage(img, 0, 0, 600, 350);
-
-// ===== Sample（プレビュー専用）=====
-ctx.save();
-ctx.globalAlpha = 0.15;        // 薄さ
-ctx.fillStyle = "#666";
-ctx.font = "bold 48px sans-serif";
-ctx.textAlign = "center";
-ctx.textBaseline = "middle";
-ctx.fillText("Sample", canvas.width / 2, canvas.height / 2);
-ctx.restore();
-// ====================================
+  ctx.arcTo(x + w, y + h, x, y + h, rr);
   ctx.arcTo(x, y + h, x, y, rr);
   ctx.arcTo(x, y, x + w, y, rr);
   ctx.closePath();
